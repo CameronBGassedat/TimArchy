@@ -2,7 +2,7 @@ import {createClient} from 'redis';
 const REDIS_SERVER = "redis://127.0.0.1:6379";
 
 (async () => {
-    const client = createClient();
+    const client = createClient(REDIS_SERVER);
     await client.connect();
 
     client.on('ready', () => {
