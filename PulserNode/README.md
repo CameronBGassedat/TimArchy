@@ -2,7 +2,6 @@
 
 Le rôle du pulser est d'envoyer de la donnée fictive vers la base de donnée locale. Cette donnée envoyée simule les informations qu'enverront les capteurs et les actuateurs qui seront installés dans le ou les bâtiments.
 
-
 # Utilisation
 
 **Environnement sans docker :**
