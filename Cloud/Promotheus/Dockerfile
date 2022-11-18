@@ -1,3 +1,3 @@
 FROM prom/prometheus:latest
 
-# EXPOSE 9090
+EXPOSE 9090

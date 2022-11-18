@@ -1,24 +1,13 @@
 version: "3.8"
 services:
   mysql:
-    #  build: cloud/mysql
+    build: cloud/mysql
     container_name: mysqlCloudContainer
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: user_db
-    expose:
-      - 3306
-    image: mysql:latest
     ports:
       - 3306:3306
-    volumes:
-      - /docker/cloud/mysql/database
 
   promotheus:
-    # build: cloud/promotheus
+    build: cloud/promotheus
     container_name: prometheusCloudContainer
-    expose:
-      - 9090
-    image: prom/prometheus:latest
     ports:
       - 9090:9090
