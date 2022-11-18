@@ -1,4 +1,3 @@
-import express from 'express';
 import { createClient } from 'redis';
 
 const url = process.env.REDIS_URL || 'redis://localhost:6379';
@@ -11,13 +10,15 @@ async function main(){
 
   client.on('error', (err) => console.log('Redis Client Error', err));
   await client.connect();
+  
   var mykey : number = 0;
-  let lightshit = new Light("kitchen light", false);
-
+  let lightdata = new Light("kitchen light", false);
+  const jsonbject = JSON.stringify(lightdata);
+  
   while (true) {
     await delay(1000);
 
-    await client.set(mykey.toString(), "ceci est un test, shut c'est pafait");
+    await client.set(mykey.toString(), jsonbject);
     mykey++;
   }
 }
