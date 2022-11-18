@@ -1,7 +1,26 @@
 import express from 'express';
+import { createClient } from 'redis';
 
-const app = express();
-const port = 3000;
+const url = process.env.REDIS_URL || 'redis://localhost:6379';
+
+main();
+async function main(){
+  const client = createClient({
+    url
+  });
+
+  client.on('error', (err) => console.log('Redis Client Error', err));
+  await client.connect();
+  var mykey : number = 0;
+  let lightshit = new Light("kitchen light", false);
+
+  while (true) {
+    await delay(1000);
+
+    await client.set(mykey.toString(), "ceci est un test, shut c'est pafait");
+    mykey++;
+  }
+}
 
 class Light {
   name : string;
@@ -26,18 +45,3 @@ class Data {
 function delay(ms: number) {
   return new Promise( resolve => setTimeout(resolve, ms) );
 }
-
-app.get('/', async (req, res) => {
-    let newLight = new Light("Kitchen Light", false);
-    let timestamp = new Date();
-    let dbData = new Data(timestamp, newLight);
-
-    while (true) {
-      res.send(dbData);
-      await delay(1000);
-    }
-  });
-
-  app.listen(port, () => {
-  return console.log(`Express is listening at http://localhost:${port}`);
-});
