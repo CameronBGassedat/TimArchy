@@ -11,3 +11,34 @@ services:
     container_name: prometheusCloudContainer
     ports:
       - 9090:9090
+  
+  redis:  
+    container_name: redis
+    image: redis/redis-stack:latest
+    command: redis-stack-server /usr/local/etc/redis/redis.conf
+    restart: unless-stopped
+    volumes:
+      - ./Local/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    expose:
+      - 6379
+  web2:
+    container_name: cloud-ws
+    hostname: cloud-ws
+    build: ./Cloud/cloud-ws
+    command: npm start
+    volumes:
+      - ./Cloud/cloud-ws:/usr/app
+      - /usr/app/node_modules
+    tty: true
+    ports:
+      - "3000:3000"
+  web:
+    container_name: ws-local
+    hostname: ws-local
+    build: ./Local/notif-server
+    command: npm start
+    volumes:
+      - ./Local/notif-server:/usr/app/
+      - /usr/app/node_modules
+    tty: true
+  

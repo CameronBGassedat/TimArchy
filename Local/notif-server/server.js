@@ -3,8 +3,10 @@ import redis,{createClient} from 'redis';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 
 // Configuration REDIS: adapt to your environment
-const REDIS_SERVER = "redis://127.0.0.1:6379";
-
+const client = redis.createClient({
+    url: 'redis://redis',
+    port: 6379
+});
 //Configuration WebSocket
 const options = {
     WebSocket: WebSocket, // custom WebSocket constructor
@@ -12,12 +14,11 @@ const options = {
     maxRetries: 10,
 };
 
-const socket = new ReconnectingWebSocket('ws://127.0.0.1:3000',[], options);
+const socket = new ReconnectingWebSocket('ws://cloud-ws:3000',[], options);
  
 socket.addEventListener('open', () => {
 
     (async () => {
-        const client = createClient(REDIS_SERVER);
         await client.connect();
         client.on('ready', () => {
                 console.log(` connected to localhost:${REDIS_SERVER}`);
