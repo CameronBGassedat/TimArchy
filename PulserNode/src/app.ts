@@ -1,6 +1,6 @@
 import { createClient } from 'redis';
 
-const url = process.env.REDIS_URL || 'redis://localhost:6379';
+const url = process.env.REDIS_URL || 'redis://redis:6379';
 
 main();
 async function main(){
