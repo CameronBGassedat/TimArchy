@@ -41,4 +41,13 @@ services:
       - ./Local/notif-server:/usr/app/
       - /usr/app/node_modules
     tty: true
-  
+  pulseur:
+    image: pulseur
+    build: 
+      context: ./PulserNode
+      dockerfile: Dockerfile
+    container_name: pulseur
+    volumes:
+      - ./PulserNode:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run dev
