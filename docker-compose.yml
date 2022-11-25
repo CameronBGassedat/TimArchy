@@ -1,13 +1,13 @@
 version: "3.8"
 services:
   mysql:
-    build: cloud/mysql
+    build: Cloud/mysql
     container_name: mysqlCloudContainer
     ports:
       - 3306:3306
 
   promotheus:
-    build: cloud/promotheus
+    build: Cloud/prometheus
     container_name: prometheusCloudContainer
     ports:
       - 9090:9090
