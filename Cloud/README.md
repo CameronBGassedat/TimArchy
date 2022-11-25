@@ -12,8 +12,3 @@ Le rôle des bases de donnée Cloud est de stocker les donnés qu'ils reçoivent
 Dans un terminal, il faut:
  1. Se placer à la racine du projet
  2. Lancer la commande `docker compose up --build -d` 
-
-A faire:
-Dans la partie utilisation décrire en 2 parties 
--mysql
--promotheus
