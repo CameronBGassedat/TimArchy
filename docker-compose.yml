@@ -1,16 +1,16 @@
 version: "3.8"
 services:
-  mysql:
-    build: cloud/mysql
-    container_name: mysqlCloudContainer
-    ports:
-      - 3306:3306
+ # mysql:
+ #   build: cloud/mysql
+ #   container_name: mysqlCloudContainer
+ #   ports:
+ #     - 3306:3306
 
-  promotheus:
-    build: cloud/promotheus
-    container_name: prometheusCloudContainer
-    ports:
-      - 9090:9090
+  # promotheus:
+  #  build: cloud/promotheus
+  #  container_name: prometheusCloudContainer
+  #  ports:
+  #    - 9090:9090
   
   redis:  
     container_name: redis
@@ -51,3 +51,20 @@ services:
       - ./PulserNode:/usr/src/app
       - /usr/src/app/node_modules
     command: npm run dev
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    ports:
+      - '8086:8086'
+    volumes:
+      - /var/lib/influxdb
+    environment:
+      - INFLUXDB_DB=db0
+      - INFLUXDB_ADMIN_USER=root
+      - INFLUXDB_ADMIN_PASSWORD=root
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=ilias
+      - DOCKER_INFLUXDB_INIT_PASSWORD=iliaspassword
+      - DOCKER_INFLUXDB_INIT_ORG=TimArchy
+      - DOCKER_INFLUXDB_INIT_BUCKET=DATA
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=THISISMYTOKENAPI
