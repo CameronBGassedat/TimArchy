@@ -1,0 +1,50 @@
+{
+  "sensor1":
+    {
+      "id" : 1,
+      "timestamp": "2018-12-10T13:49:51.141Z",
+      "object":
+      {
+        "name" : "lumière",
+        "room" : "salle des machines",
+        "value": false
+      },
+      "command" : "set"
+    },
+    "sensor2":
+    {
+      "id" : 2,
+      "timestamp": "2018-12-10T13:49:51.141Z",
+      "object":
+      {
+        "name" : "led",
+        "room" : "salle des machines",
+        "value": true
+      },
+      "command" : "set"
+    },
+    "sensor3":
+    {
+      "id" : 3,
+      "timestamp": "2018-12-10T13:49:51.141Z",
+      "object":
+      {
+        "name" : "lumière",
+        "room" : "salle des coffres",
+        "value": false
+      },
+      "command" : "set"
+    },
+    "sensor4":
+    {
+      "id" : 4,
+      "timestamp": "2018-12-10T13:49:51.141Z",
+      "object":
+      {
+        "name" : "lumière",
+        "room" : "rez de chaussée",
+        "value": false
+      },
+      "command" : "set"
+    }
+  }

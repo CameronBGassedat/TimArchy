@@ -3,9 +3,9 @@ import dataJson from '../../Resources/allsensor.json';
 
 const url = process.env.REDIS_URL || 'redis://localhost:6379';
 
-
 main();
-async function main(){
+
+async function main() {
   const client = createClient({
     url
   });

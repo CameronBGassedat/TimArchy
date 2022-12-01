@@ -1,0 +1,38 @@
+{
+  "sensor1":
+    {
+      "id" : 1,
+      "timestamp": "2018-12-10T13:49:51.141Z",
+      "object":
+      {
+        "name" : "thernometre",
+        "room" : "rez de chaussée",
+        "value": 15
+      },
+      "command" : "set"
+    },
+    "sensor2":
+    {
+      "id" : 2,
+      "timestamp": "2018-12-10T13:49:51.141Z",
+      "object":
+      {
+        "name" : "thernometre",
+        "room" : "salle des machines",
+        "value": 33
+      },
+      "command" : "set"
+    },
+    "sensor3":
+    {
+      "id" : 3,
+      "timestamp": "2018-12-10T13:49:51.141Z",
+      "object":
+      {
+        "name" : "thernometre",
+        "room" : "salle des coffres",
+        "value": 55
+      },
+      "command" : "set"
+    }
+}
