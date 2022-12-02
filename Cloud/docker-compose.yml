@@ -68,3 +68,14 @@ services:
       - DOCKER_INFLUXDB_INIT_ORG=TimArchy
       - DOCKER_INFLUXDB_INIT_BUCKET=DATA
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=THISISMYTOKENAPI
+
+  broker:
+    image: eclipse-mosquitto:2
+    container_name: broker
+    tty: true
+    volumes:
+      - ./Local/mosquitto/config/:/mosquitto/config/:ro
+      - ./Local/mosquitto/log/:/mosquitto/log/:ro
+    ports:
+      - 1883:1883
+      - 9001:9001
