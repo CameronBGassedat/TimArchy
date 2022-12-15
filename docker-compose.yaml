@@ -1,0 +1,81 @@
+version: "3.8"
+services:
+ # mysql:
+ #   build: cloud/mysql
+ #   container_name: mysqlCloudContainer
+ #   ports:
+ #     - 3306:3306
+
+  # promotheus:
+  #  build: cloud/promotheus
+  #  container_name: prometheusCloudContainer
+  #  ports:
+  #    - 9090:9090
+  
+  redis:  
+    container_name: redis
+    image: redis/redis-stack:latest
+    command: redis-stack-server /usr/local/etc/redis/redis.conf
+    restart: unless-stopped
+    volumes:
+      - ./Local/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    expose:
+      - 6379
+  web2:
+    container_name: cloud-ws
+    hostname: cloud-ws
+    build: ./Cloud/cloud-ws
+    command: npm start
+    volumes:
+      - ./Cloud/cloud-ws:/usr/app
+      - /usr/app/node_modules
+    tty: true
+    ports:
+      - "3000:3000"
+  web:
+    container_name: ws-local
+    hostname: ws-local
+    build: ./Local/notif-server
+    command: npm start
+    volumes:
+      - ./Local/notif-server:/usr/app/
+      - /usr/app/node_modules
+    tty: true
+  pulseur:
+    image: pulseur
+    build: 
+      context: ./PulserNode
+      dockerfile: Dockerfile
+    container_name: pulseur
+    volumes:
+      - ./PulserNode:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run dev
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    ports:
+      - '8086:8086'
+    volumes:
+      - /var/lib/influxdb
+    environment:
+      - INFLUXDB_DB=db0
+      - INFLUXDB_ADMIN_USER=root
+      - INFLUXDB_ADMIN_PASSWORD=root
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=ilias
+      - DOCKER_INFLUXDB_INIT_PASSWORD=iliaspassword
+      - DOCKER_INFLUXDB_INIT_ORG=TimArchy
+      - DOCKER_INFLUXDB_INIT_BUCKET=DATA
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=THISISMYTOKENAPI
+
+  broker:
+    image: eclipse-mosquitto:2
+    container_name: broker
+    tty: true
+    volumes:
+      - ./Local/mosquitto/config/:/mosquitto/config/:ro
+      - ./Local/mosquitto/log/:/mosquitto/log/:ro
+    ports:
+      - 1883:1883
+      - 9001:9001
