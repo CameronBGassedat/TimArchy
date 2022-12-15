@@ -1,5 +1,5 @@
 import { createClient } from 'redis';
-import dataJson from '../../Resources/allsensor.json';
+import dataJson from './allsensor.json';
 
 const url = process.env.REDIS_URL || 'redis://redis:6379';
 
