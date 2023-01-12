@@ -8,25 +8,35 @@ const CloudUrl = 'http://influxdb:8086'
 let CloudOrg = `TimArchy`
 let CloudBucket = `DATA`
 const CLOUD_WEB_SOCKET_PORT = 3000;
-const CloudServer = new WebSocketServer({ port : WEB_SOCKET_PORT });
 const CloudClient = new InfluxDB({CloudUrl, CloudToken}).getQueryApi(CloudOrg)
 
-/* LOCAL */
-const LocalUrl = 'redis://redis'
-const LocalPort = 6379
-const LocalClient = redis.createClient({
-  url: LocalUrl,
-  port: LocalPort
+const express = require('express');
+const app = express();
+const port = 8086;
+
+app.post('/', (req, res) => {
+  const writeApi = CloudClient.getWriteApi(CloudOrg, CloudBucket)
+
+  writeApi.useDefaultTags({location: hostname()})
+
+  let point = new Point('lumière')
+  .tag('light_id', 'light kitchen')
+  .stringField('value','test')
+
+  writeApi.writePoint(point)
+
+  writeApi.close().then(() => {
+    console.log('WRITE FINISHED')
+  })
+  res.send('Hello World!');
+
 });
 
-/* HTTP Calls */
-const Http = new XMLHttpRequest();
-
-Http.open("GET", GetAll());
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});
 
 function GetAll() {
-  
-  /* Cloud */
   const fluxQuery = 'from(bucket:' +  CloudBucket + ')';
   const observer = {
     next(row, tableMeta) {
@@ -37,6 +47,22 @@ function GetAll() {
     }
   }
   CloudClient.queryRows(fluxQuery, observer)
+}
+
+function PostData() {
+  const writeApi = CloudClient.getWriteApi(CloudOrg, CloudBucket)
+
+  writeApi.useDefaultTags({location: hostname()})
+
+  let point = new Point('lumière')
+  .tag('light_id', 'light kitchen')
+  .stringField('value','test')
+
+  writeApi.writePoint(point)
+
+  writeApi.close().then(() => {
+    console.log('WRITE FINISHED')
+  })
 }
 
 // Http.onreadystatechange = (e) => {
@@ -52,7 +78,6 @@ function GetAll() {
 // }
 
 function get() {}
-
 
 function update() {}
 

@@ -15,7 +15,7 @@ const options = {
 };
 
 const socket = new ReconnectingWebSocket('ws://cloud-ws:3000',[], options);
- 
+
 socket.addEventListener('open', () => {
 
     (async () => {
