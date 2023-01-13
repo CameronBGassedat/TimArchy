@@ -21,6 +21,8 @@ services:
       - ./Local/redis/redis.conf:/usr/local/etc/redis/redis.conf
     expose:
       - 6379
+    environment:
+       - REDIS_URL=redis://localhost:9000
   web2:
     container_name: cloud-ws
     hostname: cloud-ws
