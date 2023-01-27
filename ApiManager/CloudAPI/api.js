@@ -52,8 +52,8 @@ app.post('/add', (req, res) => {
         jsonBody = new User(req.body.type, req.body.id, req.body.name, req.body.email)
         pointDT = new Point(jsonBody.type)
             .tag(req.body.id, 'id')
-            .stringField('name', jsonBody.name)
-            .stringField('email', jsonBody.email)
+            .stringField(jsonBody.name, 'name')
+            .stringField(jsonBody.email, 'email')
         writeApi = client.getWriteApi(org, 'DATA')
         break;
     
@@ -71,8 +71,8 @@ app.post('/add', (req, res) => {
         jsonBody = new Sensor(req.body.id, req.body.name, req.body.data, req.body.buildingID)
         pointDT = new Point(jsonBody.type)
             .tag(req.body.id, 'id')
-            .stringField('name', jsonBody.name)
-            .stringField('email', jsonBody.email)
+            .stringField(jsonBody.name, 'name')
+            .stringField(jsonBody.email, 'email')
         writeApi = client.getWriteApi(org, 'SENSOR')
         break;
     default:
@@ -95,7 +95,7 @@ app.post('/add', (req, res) => {
     }
 });
 
-app.listen(port, () => {
+app.listen(port, () => { 
   console.log(`Example app listening at http://localhost:${port}`);
 });
 
