@@ -1,6 +1,7 @@
 import {InfluxDB, Point} from '@influxdata/influxdb-client'
 import {hostname} from 'node:os'
-import express from 'express';
+import express from 'express'
+import userModel from '../CloudAPI/controller/user'
 
 /* CLOUD */
 const token = "THISISMYTOKENAPI"
@@ -15,7 +16,7 @@ const port = 3000;
 
 app.post('/add', (req, res) => {
   let writeApi = client.getWriteApi(org, bucket)
-
+  //let md = req.body as userModel
   writeApi.useDefaultTags(
     {
       location: hostname()
