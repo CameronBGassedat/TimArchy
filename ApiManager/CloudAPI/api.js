@@ -43,10 +43,8 @@ const port = 3000;
 app.use( bodyParser.json() );
 
 app.post('/add', (req, res) => {
-  let jsonBody
-  let pointDT
-  let writeApi
-
+  let jsonBody, pointDT, writeApi
+  console.log(req.body);
   switch (req.body.type) {
     case 'User':
         jsonBody = new User(req.body.type, req.body.id, req.body.name, req.body.email)
@@ -56,7 +54,7 @@ app.post('/add', (req, res) => {
             .stringField(jsonBody.email, 'email')
         writeApi = client.getWriteApi(org, 'DATA')
         break;
-    
+
     case 'Building':
         jsonBody = new Buiding(req.body.id, req.body.name, req.body.clientID, req.body.sensorID)
         pointDT = new Point(jsonBody.type)
@@ -66,7 +64,7 @@ app.post('/add', (req, res) => {
             .stringField(jsonBody.sensorID,'SensorIDs')
         writeApi = client.getWriteApi(org, 'BUILDING')
         break;
-    
+
     case 'Sensor':
         jsonBody = new Sensor(req.body.id, req.body.name, req.body.data, req.body.buildingID)
         pointDT = new Point(jsonBody.type)
@@ -100,17 +98,15 @@ app.listen(port, () => {
 });
 
 app.get('/get', (req, res) => {
-  console.log("inside get")
-
   const str = ' |> filter(fn: (r) => r._value == "light kitchen")'
   const fluxQuery = 'from(bucket:"DATA") |> range(start: 0)'
-  
+
   const query = `\
-  from(bucket:"${bucket}")\
+  from(bucket:"DATA")\
   |> range(start: 0)\
   `;
-  let clientWrite = client.getQueryApi(org);
-  clientWrite.queryRows(query, {
+  let readApi = client.getQueryApi(org);
+  readApi.queryRows(query, {
     next(row, tableMeta) {
         const o = tableMeta.toObject(row);
         console.log(o)
@@ -118,11 +114,13 @@ app.get('/get', (req, res) => {
     },
     complete() { 
         console.log('FINISHED')
+        res.status(200).send()
     },
     error(error) {
         console.log('QUERY FAILED', error)
+        res.status(404).send("QUERY FAILED, "+ {error})
     },
-  });
+  })
 });
 
 app.post('/delete', (req, res) => {
@@ -147,5 +145,5 @@ app.post('/delete', (req, res) => {
       error(error) {
           console.log('QUERY FAILED', error)
       },
-    });
+    })
   });
