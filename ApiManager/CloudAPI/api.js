@@ -2,6 +2,8 @@ import {InfluxDB, Point} from '@influxdata/influxdb-client'
 import {hostname} from 'node:os'
 import express from 'express'
 import bodyParser from 'body-parser';
+import { Console } from 'node:console';
+import cors from 'cors'
 
 const User = class {
     constructor(type, id, name, email) {
@@ -40,9 +42,11 @@ const client = new InfluxDB({url, token})
 const app = express();
 const port = 3000;
 
-app.use( bodyParser.json() );
+app.use(bodyParser.json());
+app.use(cors());
 
 app.post('/add', (req, res) => {
+  console.log('post');
   let jsonBody, pointDT, writeApi
   console.log(req.body);
   switch (req.body.type) {
@@ -97,24 +101,24 @@ app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
 
-app.get('/get', (req, res) => {
-  const str = ' |> filter(fn: (r) => r._value == "light kitchen")'
-  const fluxQuery = 'from(bucket:"DATA") |> range(start: 0)'
-
+app.get('/get_users', (req, res) => {
   const query = `\
   from(bucket:"DATA")\
   |> range(start: 0)\
+  |> filter(fn: (r) => r._measurement == "User")
   `;
+
+  let objects = [];
   let readApi = client.getQueryApi(org);
   readApi.queryRows(query, {
     next(row, tableMeta) {
-        const o = tableMeta.toObject(row);
-        console.log(o)
-        // filter to get value, field, measurement, light-id
+      const o = tableMeta.toObject(row);
+      var temp = new User(o._measurement, 'o.id', 'o.name', o._field)
+      objects.push(temp)
     },
     complete() { 
         console.log('FINISHED')
-        res.status(200).send()
+        res.status(200).send(objects)
     },
     error(error) {
         console.log('QUERY FAILED', error)
@@ -122,28 +126,3 @@ app.get('/get', (req, res) => {
     },
   })
 });
-
-app.post('/delete', (req, res) => {
-    // update value, only change the field
-    const str = ' |> filter(fn: (r) => r._value == "light kitchen")'
-    const fluxQuery = 'from(bucket:"DATA") |> range(start: 0)'
-    
-    const query = `\
-    from(bucket:"${bucket}")\
-    |> range(start: 0)\
-    `;
-    let clientWrite = client.getQueryApi(org);
-    clientWrite.queryRows(query, {
-      next(row, tableMeta) {
-          const o = tableMeta.toObject(row);
-          console.log(o)
-          // filter to get value, field, measurement, light-id
-      },
-      complete() {
-          console.log('FINISHED')
-      },
-      error(error) {
-          console.log('QUERY FAILED', error)
-      },
-    })
-  });
