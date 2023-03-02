@@ -8,7 +8,7 @@ export default {
      |> range(start: -30d)
      |> keep(columns: ["_measurement", "id", "clientID", "_field", "_value"])`
      ;
-     var database = Database();
+     var database = new Database();
       database.getPoint(query);
       return;
     } catch (error) {
@@ -23,7 +23,7 @@ export default {
         |> filter(fn: (r) => r.id == "` + req.params.id +`")
         |> keep(columns: ["_measurement", "id", "roomID", "_field", "_value"])
         `;
-        var database = Database();
+        var database = new Database();
         database.getPoint(query);
       return;
     } catch (error) {
@@ -38,7 +38,7 @@ export default {
           .tag('id', req.body.id)
           .stringField('sensorID', jsonBody.sensorID)
       writeApi = client.getWriteApi(org, 'ROOM')
-      var database = Database();
+      var database = new Database();
       database.PostPoint('BUILDING', pointDT);
       return;
     } catch (error) {

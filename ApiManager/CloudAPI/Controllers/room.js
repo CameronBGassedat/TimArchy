@@ -4,10 +4,12 @@ export default {
   getall: async (req, res) => {
     try {
       console.log("Inside get all rooms")
-        const query = `from(bucket:"ROOM")
+      const query = `from(bucket:"ROOM")
       |> range(start: -30d)
       |> keep(columns: ["_measurement", "id", "_field", "_value"])`
       ;
+      var database = new Database();
+      database.getPoint(query);
       return;
     } catch (error) {
       next(error);
@@ -21,6 +23,8 @@ export default {
         |> filter(fn: (r) => r.id == "` + req.params.id +`")
         |> keep(columns: ["_measurement", "id", "roomID", "_field", "_value"])
         `;
+        var database = new Database();
+        database.getPoint(query);
       return;
     } catch (error) {
       next(error);
@@ -34,9 +38,8 @@ export default {
           .tag('id', req.body.id)
           .stringField('sensorID', jsonBody.sensorID)
       
-      var database = Database();
+      var database = new Database();
       database.PostPoint('ROOM', pointDT);
-
       return;
     } catch (error) {
       next(error);

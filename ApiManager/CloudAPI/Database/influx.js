@@ -1,18 +1,18 @@
-import bodyParser from 'body-parser';
 import {InfluxDB, Point} from '@influxdata/influxdb-client'
 import {hostname} from 'node:os'
 import express from 'express'
+import bodyParser from 'body-parser';
 
 const org = `TimArchy`
 const token = "THISISMYTOKENAPI"
 const url = 'http://localhost:8086'
 
-export class Database {
+export default class Database {
     constructor() {
         this.client = new InfluxDB({url, token})
     }
 
-    async PostPoint(bucket , point) {
+    async PostPoint(bucket, point, res) {
         let writeApi = this.client.getWriteApi(org, bucket)
         writeApi.useDefaultTags({location: hostname()})
         writeApi.writePoint(point)
@@ -24,12 +24,12 @@ export class Database {
         .catch(e => {
             console.log('CLOSE FAILED', e)
         })
-        res.send(jsonBody.name + 'with ID : '+ jsonBody.id +' Added');
+        //res.send(point.name + 'with ID : '+ jsonBody.id +' Added');
         return;
     }
 
-    async GetPoint(query) {
-        let readApi = client.getQueryApi(org);
+    async GetPoint(query, res) {
+        let readApi = this.client.getQueryApi(org);
         readApi.queryRows(query, {
             next(row, tableMeta) {
               const o = tableMeta.toObject(row);

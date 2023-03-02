@@ -1,16 +1,16 @@
-import { Database } from "../Database/influx.js";
 import Sensor from "../Models/sensor.mjs";
-import Database from "../Databse/influx.js";
+import Database from "../Database/influx.js";
+import  {Point} from '@influxdata/influxdb-client'
 
 export default {
   getall: async (req, res, next) => {
     try {
       console.log("Inside get all sensors")
-      const MultipleSensorsQuery = `from(bucket:"SENSOR")
+      const query = `from(bucket:"SENSOR")
       |> range(start: -30d)
       |> keep(columns: ["_measurement", "id", "roomID", "_field", "_value"])`
       ;
-      var database = Database();
+      const database = new Database();
       database.getPoint(query);
       return;
     } catch (error) {
@@ -25,7 +25,7 @@ export default {
           |> filter(fn: (r) => r.id == "` + req.params.id +`")
           |> keep(columns: ["_measurement", "id", "roomID", "_field", "_value"])
           `;
-      var database = Database();
+      var database = new Database();
       database.getPoint(query);
       return;
     } catch (error) {
@@ -40,8 +40,8 @@ export default {
           .tag('id', jsonBody.id)
           .tag('roomID', jsonBody.roomID)
           .stringField('data', jsonBody.data)
-      var database = Database();
-      database.PostPoint('SENSOR', pointDT);
+      var database = new Database();
+      database.PostPoint('SENSOR', pointDT, res);
     return;
     } catch (error) {
       next(error);
