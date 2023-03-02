@@ -1,17 +1,5 @@
 version: "3.8"
 services:
- # mysql:
- #   build: cloud/mysql
- #   container_name: mysqlCloudContainer
- #   ports:
- #     - 3306:3306
-
-  # promotheus:
-  #  build: cloud/promotheus
-  #  container_name: prometheusCloudContainer
-  #  ports:
-  #    - 9090:9090
-  
   redis:  
     container_name: redis
     image: redis/redis-stack:latest

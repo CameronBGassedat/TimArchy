@@ -1,7 +1,5 @@
 import {InfluxDB, Point} from '@influxdata/influxdb-client'
 import {hostname} from 'node:os'
-import express from 'express'
-import bodyParser from 'body-parser';
 
 const org = `TimArchy`
 const token = "THISISMYTOKENAPI"
@@ -24,7 +22,7 @@ export default class Database {
         .catch(e => {
             console.log('CLOSE FAILED', e)
         })
-        //res.send(point.name + 'with ID : '+ jsonBody.id +' Added');
+        res.send("Post successfully sent");
         return;
     }
 

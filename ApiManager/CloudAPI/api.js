@@ -1,11 +1,6 @@
-import {InfluxDB, Point} from '@influxdata/influxdb-client'
 import express from 'express'
 import bodyParser from 'body-parser';
 import cors from 'cors';
-// import Building from './controller/building.mjs'
-// import Room from './controller/room.mjs'
-// import User from './controller/user.mjs'
-// import Sensor from './controller/sensor.mjs'
 
 /* Router */
 import user from "./Routers/user.js"
@@ -17,8 +12,6 @@ import room from "./Routers/room.js"
 const token = "THISISMYTOKENAPI"
 const url = 'http://localhost:8086'
 const org = `TimArchy`
-
-//const client = new InfluxDB({url, token})
 
 const app = express();
 const port = 3000;
