@@ -9,6 +9,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: cd ./PulserNode
-      - run: npm install
-      - run: npm run lint
+      - run: cd ./PulserNode && npm install
+      - run: cd ./PulserNode && npm run lint
