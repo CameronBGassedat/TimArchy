@@ -1,5 +1,6 @@
 import {InfluxDB, Point} from '@influxdata/influxdb-client'
 import {hostname} from 'node:os'
+import Sensor from "../Models/sensor.mjs"
 
 const org = `TimArchy`
 const token = "THISISMYTOKENAPI"
@@ -17,10 +18,10 @@ export default class Database {
         writeApi
         .close()
         .then( () => {
-            console.log('CLOSE FINISHED')
+            console.log('Close Complete')
         })
         .catch(e => {
-            console.log('CLOSE FAILED', e)
+            console.log('close FAILED', e)
         })
         res.send("Post successfully sent");
         return;
@@ -28,17 +29,19 @@ export default class Database {
 
     async GetPoint(query, res) {
         let readApi = this.client.getQueryApi(org);
+        let nodeArray = []
         readApi.queryRows(query, {
             next(row, tableMeta) {
               const o = tableMeta.toObject(row);
-              var node = new Sensor(o._measurement, o.id, o.name, o.data, o.roomID)
-              objects.push(node)
+              var node = new Sensor(o.id, o._measurement, o._value, o.roomID)
+              nodeArray.push(node)
             },
             complete() { 
-                console.log('FINISHED')
-                res.status(200).send(objects)
+                console.log('Complete Get Point')
+                res.status(200).send(nodeArray)
             },
             error(error) {
+                console.log('Error Get Point')
                 res.status(404).send("QUERY FAILED, "+ {error})
             },
         })

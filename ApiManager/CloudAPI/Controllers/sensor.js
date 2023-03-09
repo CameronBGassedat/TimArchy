@@ -11,7 +11,7 @@ export default {
       |> keep(columns: ["_measurement", "id", "roomID", "_field", "_value"])`
       ;
       const database = new Database();
-      database.getPoint(query);
+      database.GetPoint(query, res);
       return;
     } catch (error) {
       next(error);
@@ -26,7 +26,7 @@ export default {
           |> keep(columns: ["_measurement", "id", "roomID", "_field", "_value"])
           `;
       var database = new Database();
-      database.getPoint(query);
+      database.GetPoint(query, res);
       return;
     } catch (error) {
       next(error);
