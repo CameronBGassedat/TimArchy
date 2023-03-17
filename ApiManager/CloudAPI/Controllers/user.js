@@ -1,15 +1,17 @@
-import User from "../Models/user.mjs";
+import Sensor from "../Models/user.mjs";
+import Database from "../Database/influx.js";
+import  {Point} from '@influxdata/influxdb-client'
 
 export default {
   getall: async (req, res) => {
     try {
       console.log("Inside get all users")
-        const query = `from(bucket:"USER")
+      const query = `from(bucket:"USER")
             |> range(start: -30d)
             |> keep(columns: ["_measurement", "id", "_field", "_value"])`
             ;
-        var database = new Database();
-        database.getPoint(query);
+      const database = new Database();
+      database.GetPoint(query, res);
       return;
     } catch (error) {
       next(error);
@@ -37,7 +39,7 @@ export default {
       pointDT = new Point(jsonBody.name)
               .tag('id', jsonBody.id)
               .stringField('email', jsonBody.email)
-      var database = Database();
+      var database = new Database();
       database.PostPoint('USER', pointDT);
       return;
     } catch (error) {

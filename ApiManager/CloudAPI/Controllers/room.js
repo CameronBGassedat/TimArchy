@@ -1,4 +1,6 @@
-import Room from "../Models/room.mjs";
+import Sensor from "../Models/room.mjs";
+import Database from "../Database/influx.js";
+import  {Point} from '@influxdata/influxdb-client'
 
 export default {
   getall: async (req, res) => {
@@ -8,8 +10,8 @@ export default {
       |> range(start: -30d)
       |> keep(columns: ["_measurement", "id", "_field", "_value"])`
       ;
-      var database = new Database();
-      database.getPoint(query);
+      const database = new Database();
+      database.GetPoint(query, res);
       return;
     } catch (error) {
       next(error);
