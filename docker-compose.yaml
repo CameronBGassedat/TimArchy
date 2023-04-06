@@ -69,3 +69,16 @@ services:
     ports:
       - 1883:1883
       - 9001:9001
+  
+  api-local:
+    build:
+      context: ./ApiManager/LocalApi
+      dockerfile: Dockerfile
+    container_name: api-local
+    command: npm start
+    ports:
+      - 3000:3000
+    volumes:
+      - ./ApiManager/LocalApi:/usr/src/app
+      - /usr/src/app/node_modules
+      - ./ApiManager/LocalApi/logs/:/usr/src/app/logs
