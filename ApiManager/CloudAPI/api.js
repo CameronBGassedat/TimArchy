@@ -7,6 +7,7 @@ import user from "./Routers/user.js"
 import sensor from "./Routers/sensor.js"
 import building from "./Routers/building.js"
 import room from "./Routers/room.js"
+import healthcheck from "./Routers/healthcheck.js"
 
 /* CLOUD */
 const token = "THISISMYTOKENAPI"
@@ -25,7 +26,10 @@ app.use("/building", building)
 app.use("/user", user)
 app.use("/room", room)
 app.use("/sensor", sensor)
+app.use("/healthcheck_IU3AHD9H",healthcheck)
 
-app.listen(port, () => { 
+const server = app.listen(port, () => { 
   console.log(`App listening at http://localhost:${port}`);
 });
+
+export {app, server}
