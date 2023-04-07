@@ -12,8 +12,9 @@ describe('Test Post All Sensors', () => {
                 }
         )
         expect(response.status).toEqual(200)
-      });
-  })
+    });
+  }
+)
 
 describe('Test Post All Building', () => {
     it('should test that adding a single building on the database works', async () => {
@@ -28,8 +29,10 @@ describe('Test Post All Building', () => {
         )
         expect(response.status).toEqual(200)
       });
-  })
-  describe('Test Post All Rooms', () => {
+  }
+)
+  
+describe('Test Post All Rooms', () => {
     it('should test that adding a single room on the database works', async () => {
         const response = await axios.post(
                 'http://localhost:3000/sensor', 
@@ -42,8 +45,10 @@ describe('Test Post All Building', () => {
         )
         expect(response.status).toEqual(200)
       });
-  })
-  describe('Test Post All Users', () => {
+  }
+)
+
+describe('Test Post All Users', () => {
     it('should test that adding a single User on the database works', async () => {
         const response = await axios.post(
                 'http://localhost:3000/sensor', 
@@ -55,4 +60,5 @@ describe('Test Post All Building', () => {
         )
         expect(response.status).toEqual(200)
       });
-  })
+  }
+)
