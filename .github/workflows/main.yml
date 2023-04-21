@@ -1,0 +1,13 @@
+name: Run test fonctionnel
+
+on:
+  push:
+
+jobs:
+  test_unit:
+    name: test for js
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: cd ./ApiManager/CloudAPI && npm install
+      - run: cd ./ApiManager/CloudAPI && npm run test

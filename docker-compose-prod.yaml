@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  redis:  
+    container_name: redis
+    image: redis/redis-stack:latest
+    command: redis-stack-server /usr/local/etc/redis/redis.conf
+    restart: unless-stopped
+    volumes:
+      - ./Local/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - 6379:6379
+    environment:
+       - REDIS_URL=redis://localhost:9000
+  
+  api-local:
+    image: ghcr.io/ilias-felioune/timarchy-api-local:latest
+    container_name: api-local
+    command: npm start
+    ports:
+      - 3000:3000
+    volumes:
+      #- /Users/iliasfelioune/Desktop/Docker/TimArchy/ApiManager/LocalApi:/usr/src/app
+      - /usr/src/app/node_modules
