@@ -1,4 +1,4 @@
-import Healthcheck from "../Controllers/Healthcheck.js"
+import Healthcheck from "../Controllers/healthcheck.js"
 import express from "express";
 const router = express.Router();
 
