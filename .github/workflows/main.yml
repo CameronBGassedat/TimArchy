@@ -9,6 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: cd .\ApiManager\CloudAPI\
+      - run: cd ./ApiManager/CloudAPI
       - run: npm install
       - run: npm run test
