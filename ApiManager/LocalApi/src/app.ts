@@ -18,11 +18,12 @@ const accessLogStream = fs.createWriteStream(path.join("./logs", 'access.log'), 
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
-app.use(logger('combined', { stream: accessLogStream }));
+//app.use(logger('combined', { stream: accessLogStream }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
 
 
 app.use("/", indexRouter);

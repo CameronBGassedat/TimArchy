@@ -1,6 +1,32 @@
 import WebSocket from 'ws';
 import redis,{createClient} from 'redis';
 import ReconnectingWebSocket from 'reconnecting-websocket';
+import mqtt from 'mqtt';
+import axios from 'axios';
+
+console.log("test")
+const client_mqtt = mqtt.connect("mqtt://broker:1883");
+
+
+client_mqtt.subscribe('esp32/output')
+client_mqtt.subscribe('esp32')
+var JSONmessage
+var baseUrl = "http://api-local:3000"
+client_mqtt.on('message', function (topic, message) {
+    JSONmessage = JSON.parse(message.toString())
+    console.log("Message du topic ",topic, " - Message => ",message.toString())
+    console.log("Message JSON", JSONmessage)
+    console.log(" \n\n sensorType =>", JSONmessage.sensorType)
+
+    var finalUrl = baseUrl + '/sensor/' + JSONmessage.id
+    axios.patch(finalUrl,{
+        id: JSONmessage.id,
+        value: JSONmessage.humidity,
+        capacity: JSONmessage.sensorType
+    })
+    
+    //patchSensor(JSONmessage.id, JSONmessage.id, JSONmessage.temperature, JSONmessage.sensorType)
+})
 
 // Configuration REDIS: adapt to your environment
 const client = redis.createClient({
@@ -13,7 +39,7 @@ const options = {
     connectionTimeout: 1000,
     maxRetries: 10,
 };
-
+/*
 const socket = new ReconnectingWebSocket('ws://cloud-ws:3000',[], options);
  
 socket.addEventListener('open', () => {
@@ -55,5 +81,18 @@ socket.addEventListener('close', (event) => {
 socket.addEventListener('error', (error) => {
     console.log(`[error]`,error.message);
 });
+*/
 
-
+async function patchSensor(idSensor, nameSensor, valueSensor, capacitySensor){
+    try{
+        const response = await instance.patch('/sensor',{
+            id: idSensor, 
+            name: nameSensor,
+            value: valueSensor,
+            capacity: capacitySensor
+        })
+        console.log(response)
+    } catch(error){
+        console.log(error)
+    }
+}

@@ -32,6 +32,7 @@ export default {
   post: async (req: Request, res: Response, next: NextFunction) => {
     try {
       let newSensor = {
+        id: req.body.id,
         name:req.body.name,
         value:req.body.value,
         capacity:req.body.capacity
@@ -51,7 +52,9 @@ export default {
       await sensorRepository.createIndex()
 
       const sensor = await sensorRepository.fetch(req.params.id)
+      console.log(sensor)
       const sensorTmp = sensor
+      sensor.id = req.body.id ?? sensorTmp.id
       sensor.name = req.body.name ?? sensorTmp.name
       sensor.value = req.body.value ?? sensorTmp.value
       sensor.capacity = req.body.capacity ?? sensorTmp.capacity
