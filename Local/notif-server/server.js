@@ -4,6 +4,9 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 import mqtt from 'mqtt';
 import axios from 'axios';
 
+var bonjour = require('bonjour')()
+
+bonjour.publish({name:'AirluxBox',type: 'http', port:3000})
 console.log("test")
 const client_mqtt = mqtt.connect("mqtt://broker:1883");
 
