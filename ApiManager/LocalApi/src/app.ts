@@ -10,6 +10,7 @@ import indexRouter from "@/routes/Index";
 import userRouter from "@/routes/User";
 import sensorRouter from "@/routes/Sensor";
 import buildingRouter from "@/routes/Building";
+import roomRouter from "@/routes/Room";
 
 import { client } from '@/middleware/database'
 
@@ -27,9 +28,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 app.use("/", indexRouter);
-app.use("/user",userRouter);
-app.use("/sensor",sensorRouter);
-app.use("/building",buildingRouter);
+app.use("/user", userRouter);
+app.use("/sensor", sensorRouter);
+app.use("/building", buildingRouter);
+app.use("/room", roomRouter);
 
 // catch 404
 //NewCommentsV2
@@ -49,7 +51,8 @@ app.use(function (err: any, req: Request, res: Response, next: NextFunction) {
   res.status(err.status || 500);
   res.json({
     message: err.message,
-    error: err});
+    error: err
+  });
 });
 
 export default app;

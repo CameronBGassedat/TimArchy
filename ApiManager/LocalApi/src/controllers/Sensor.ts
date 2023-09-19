@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { client } from "@/middleware/database";
-import { sensorSchema  } from "@/models/sensorRepository";
+import { sensorSchema } from "@/models/sensorRepository";
 
 
 export default {
@@ -9,10 +9,9 @@ export default {
       const sensorRepository = client.fetchRepository(sensorSchema)
       await sensorRepository.createIndex()
       const allPosts = await sensorRepository.search().returnAll()
-      res.json({ 
-        message: "method sensorGet[]",
+      res.json({
         data: allPosts
-     });
+      });
       return;
     } catch (error) {
       next(error);
@@ -23,7 +22,7 @@ export default {
       const sensorRepository = client.fetchRepository(sensorSchema)
       await sensorRepository.createIndex()
       let sensor = await sensorRepository.fetch(req.params.id)
-      res.json({ message: sensor});
+      res.json({ message: sensor });
       return;
     } catch (error) {
       next(error);
@@ -33,9 +32,9 @@ export default {
     try {
       let newSensor = {
         id: req.body.id,
-        name:req.body.name,
-        value:req.body.value,
-        capacity:req.body.capacity
+        name: req.body.name,
+        value: req.body.value,
+        capacity: req.body.capacity
       }
       const sensorRepository = client.fetchRepository(sensorSchema)
       const post = await sensorRepository.createAndSave(newSensor)
@@ -47,7 +46,7 @@ export default {
   },
   patch: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      
+
       const sensorRepository = client.fetchRepository(sensorSchema)
       await sensorRepository.createIndex()
 

@@ -1,13 +1,13 @@
 import { Entity, Schema } from 'redis-om'
 
 interface Building {
-    name: string;
-    location: string;
+  name: string;
+  rooms: string[];
 }
 
-class Building extends Entity {}
+class Building extends Entity { }
 
 export const buildingSchema = new Schema(Building, {
   name: { type: 'string' },
-  location: { type: 'string' }
+  rooms: { type: 'string[]' }
 })

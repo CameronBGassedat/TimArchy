@@ -1,13 +1,19 @@
 import { Entity, Schema } from 'redis-om'
+import internal from 'stream';
 
 interface Room {
-    name: string;
-    id_building: string;
+  id: internal;
+  name: string;
+  sensors: string[];
+
+  //id_building: string;
 }
 
-class Room extends Entity {}
+class Room extends Entity { }
 
 export const roomSchema = new Schema(Room, {
+  id: { type: 'number' },
   name: { type: 'string' },
-  id_building: { type: 'string' }
+  sensors: { type: 'string[]' },
+  //id_building: { type: 'string' }
 })
